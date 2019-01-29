@@ -1,5 +1,6 @@
 from jwtfuzzer.decoder import decode_jwt
 from jwtfuzzer.encoder import encode_jwt
+from custom_helpers import FuzzHelpers
 
 
 def payload_remove_iss(jwt_string):
@@ -67,3 +68,23 @@ def payload_iss_change_one_letter(jwt_string):
 
             payload['iss'] = ''.join(aud)
             yield encode_jwt(header, payload, signature)
+
+
+def payload_iss_random_string(jwt_string):
+    """
+    Sets the iss attribute to different long strings
+
+    :param jwt_string: The JWT as a string
+    :yield: The different JWT as string
+    """
+    return FuzzHelpers().payload_random_letters(jwt_string, 'iss')
+
+
+def payload_iss_random_digits(jwt_string):
+    """
+    Sets the iss attribute to different long digits
+
+    :param jwt_string: The JWT as a string
+    :yield: The different JWT as string
+    """
+    return FuzzHelpers().payload_random_digits(jwt_string, 'iss')

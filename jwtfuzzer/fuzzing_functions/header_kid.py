@@ -1,5 +1,6 @@
 from jwtfuzzer.decoder import decode_jwt
 from jwtfuzzer.encoder import encode_jwt
+from custom_helpers import FuzzHelpers
 
 
 def header_kid_empty(jwt_string):
@@ -197,3 +198,57 @@ def header_kid_file_url(jwt_string):
 
     header['kid'] = 'file://' + header['kid']
     yield encode_jwt(header, payload, signature)
+
+
+def header_kid_random_digits(jwt_string):
+    """
+    Put random digits in kid field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random digits.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_digits(jwt_string, 'kid')
+
+
+def header_kid_random_letters(jwt_string):
+    """
+    Put random ASCII letters in kid field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random letters.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_letters(jwt_string, 'kid')
+
+
+def header_kid_none_variations(jwt_string):
+    """
+    Put different variations of none in kid field, for example,
+    none, None, nOne, etc ...
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_none_variation(jwt_string, 'kid')
+
+
+def header_kid_null_variations(jwt_string):
+    """
+    Put different variations of null in kid field, for example,
+    null, Null, nUll, etc ...
+    
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_null_variation(jwt_string, 'kid')
+
+
+def header_kid_fuzz_list(jwt_string):
+    """
+    Fuzz kid field with user input fuzz wordlist
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_basic_fuzz_list(jwt_string, 'kid')

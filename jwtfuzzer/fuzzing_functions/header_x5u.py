@@ -1,5 +1,6 @@
 from jwtfuzzer.decoder import decode_jwt
 from jwtfuzzer.encoder import encode_jwt
+from custom_helpers import FuzzHelpers
 
 
 def header_x5u_remove(jwt_string):
@@ -155,3 +156,57 @@ def header_x5u_file_url_root(jwt_string):
 
     header['x5u'] = 'file:///'
     yield encode_jwt(header, payload, signature)
+
+
+def header_x5u_random_digits(jwt_string):
+    """
+    Put random digits in x5u field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random digits.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_digits(jwt_string, 'x5u')
+
+
+def header_x5u_random_letters(jwt_string):
+    """
+    Put random ASCII letters in x5u field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random letters.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_letters(jwt_string, 'x5u')
+
+
+def header_x5u_none_variations(jwt_string):
+    """
+    Put different variations of none in x5u field, for example,
+    none, None, nOne, etc ...
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_none_variation(jwt_string, 'x5u')
+
+
+def header_x5u_null_variations(jwt_string):
+    """
+    Put different variations of null in x5u field, for example,
+    null, Null, nUll, etc ...
+    
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_null_variation(jwt_string, 'x5u')
+
+
+def header_x5u_fuzz_list(jwt_string):
+    """
+    Fuzz x5u field with user input fuzz wordlist
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_basic_fuzz_list(jwt_string, 'x5u')

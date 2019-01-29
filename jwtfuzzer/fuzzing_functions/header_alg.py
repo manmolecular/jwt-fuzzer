@@ -1,5 +1,6 @@
 from jwtfuzzer.decoder import decode_jwt
 from jwtfuzzer.encoder import encode_jwt
+from custom_helpers import FuzzHelpers
 
 
 def header_alg_empty(jwt_string):
@@ -221,3 +222,56 @@ def header_alg_all_possible_values(jwt_string):
     for alg in valid_algs:
         header['alg'] = alg
         yield encode_jwt(header, payload, signature)
+
+
+def header_alg_random_digits(jwt_string):
+    """
+    Put random digits in alg field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random digits.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_digits(jwt_string, 'alg')
+
+def header_alg_random_letters(jwt_string):
+    """
+    Put random ASCII letters in alg field. Function returns
+    generator with 1, 10, 100, 1000, 10000 random letters.
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_random_letters(jwt_string, 'alg')
+
+
+def header_alg_none_variations(jwt_string):
+    """
+    Put different variations of none in alg field, for example,
+    none, None, nOne, etc ...
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_none_variation(jwt_string, 'alg')
+
+
+def header_alg_null_variations(jwt_string):
+    """
+    Put different variations of null in alg field, for example,
+    null, Null, nUll, etc ...
+    
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_null_variation(jwt_string, 'alg')
+
+
+def header_alg_fuzz_list(jwt_string):
+    """
+    Fuzz alg field with user input fuzz wordlist
+
+    :param jwt_string: The JWT as a string
+    :return: The fuzzed JWT
+    """
+    return FuzzHelpers().header_basic_fuzz_list(jwt_string, 'alg')
